@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galery</title>
+</head>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    }
+
+    body {
+    background-color: black;
+    overflow: auto;
+    }
+
+    canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    }
+
+    .image-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+    }
+
+    .image-container img {
+        width: 200px;
+        height: 300px;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+    }
+
+    .image-container img:hover {
+        transform: scale(1.1);
+    }
+
+    .popup-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .popup-container.active {
+        display: flex;
+    }
+
+    .popup-image {
+        max-width: 90%;
+        max-height: 90%;
+    }
+
+    .prev,
+    .next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 24px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .prev {
+        left: 20px;
+    }
+
+    .next {
+        right: 20px;
+    }
+    video {
+    width: 50%;
+    height: auto;
+   }
+    video.landscape {
+    transform: rotate(-90deg);
+    }
+    h1 {
+        align-items: center;
+        text-align: center;
+        color: aliceblue;
+    }
+    nav {
+        background-color: #33333300;
+        padding: 10px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        display: inline;
+        margin-right: 10px;
+    }
+
+    a {
+        color: #fff;
+        text-decoration: none;
+    }
+</style>
+<body>
+    <canvas id="starfield"></canvas>
+    <nav>
+        <ul>
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="about.html">Hadiah</a></li>
+          <li><a href="galery.html">Galery</a></li>
+          <li><a href="kontak.html">Kontak</a></li>
+        </ul>
+      </nav>
+    <h1>Our Gallery</h1>
+    <br>
+    <div class="image-container">
+        <a href="https://imgbb.com/"><img src="https://i.ibb.co/3vf9p3T/6778205737.jpg" alt="6778205737" border="0"></a>
+        <a href="https://ibb.co/2gQYhQt"><img src="https://i.ibb.co/5Byx4y8/IMG-20220406-WA0003.jpg" alt="IMG-20220406-WA0003" border="0"></a>
+        <a href="https://ibb.co/FY9sNNm"><img src="https://i.ibb.co/4Scs99K/Screenshot-2022-01-12-23-49-41-55.png" alt="Screenshot-2022-01-12-23-49-41-55" border="0"></a>
+        <a href="https://ibb.co/N7FPLPV"><img src="https://i.ibb.co/jH82L26/Screenshot-2022-03-06-18-55-10-57.png" alt="Screenshot-2022-03-06-18-55-10-57" border="0"></a>
+        <a href="https://ibb.co/qgP8dmM"><img src="https://i.ibb.co/Ks3gXVj/Screenshot-2022-03-23-21-02-49-80.png" alt="Screenshot-2022-03-23-21-02-49-80" border="0"></a>
+        <iframe src="https://www.veed.io/embed/9e6f3e27-5f11-4916-b812-53992e61c4bf" width="744" height="504" frameborder="0" title="7c4d9766b0d44f92b0d40716ab206027.mp4" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </div>
+
+    <div class="popup-container">
+        <img class="popup-image" src="" alt="Popup Image">
+        <div class="prev">&#10094;</div>
+        <div class="next">&#10095;</div>
+    </div>
+  <script>
+    var canvas = document.getElementById("starfield");
+    var ctx = canvas.getContext("2d");
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+
+    canvas.width = width;
+    canvas.height = height;
+
+    var stars = [];
+
+    function Star() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.speed = Math.random() * 10 + 1;
+      this.size = Math.random() * 3 + 1;
+    }
+
+    Star.prototype.update = function () {
+      this.y += this.speed;
+      if (this.y > height) {
+        this.y = 0;
+        this.x = Math.random() * width;
+      }
+    };
+
+    Star.prototype.draw = function () {
+      ctx.fillStyle = "white";
+      ctx.fillRect(this.x, this.y, this.size, this.size);
+    };
+
+    function createStars() {
+      for (var i = 0; i < 100; i++) {
+        stars.push(new Star());
+      }
+    }
+
+    function updateStars() {
+      ctx.clearRect(0, 0, width, height);
+      for (var i = 0; i < stars.length; i++) {
+        stars[i].update();
+        stars[i].draw();
+      }
+      requestAnimationFrame(updateStars);
+    }
+
+    createStars();
+    updateStars();
+  </script>
+</body>
+</html>
